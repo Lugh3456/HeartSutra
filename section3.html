@@ -107,22 +107,28 @@ function toggleDetail(btn) {
 }
 
 function speak(text) {
-  var synth = window.speechSynthesis;
-  function loadAndSpeak() {
-    var voices = synth.getVoices();
-    var preferred = voices.find(function(v) { return v.lang === "zh-CN"; }) || voices.find(function(v) { return v.lang.startsWith("zh"); });
-    var msg = new SpeechSynthesisUtterance(text);
-    msg.lang = "zh-CN";
-    if (preferred) msg.voice = preferred;
-    msg.rate = 0.85;
-    msg.pitch = 1;
-    synth.speak(msg);
-  }
-  if (speechSynthesis.getVoices().length === 0) {
-    speechSynthesis.onvoiceschanged = loadAndSpeak;
-  } else {
-    loadAndSpeak();
-  }
+    const synth = window.speechSynthesis;
+
+    function loadAndSpeak() {
+        const voices = synth.getVoices();
+        const tingTing = voices.find(v => v.name.includes("Ting") && v.lang === "zh-CN");
+
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = "zh-CN";
+
+        if (tingTing) msg.voice = tingTing;
+
+        msg.rate = 0.9;
+        msg.pitch = 1;
+
+        synth.speak(msg);
+    }
+
+    if (speechSynthesis.getVoices().length === 0) {
+        speechSynthesis.onvoiceschanged = loadAndSpeak;
+    } else {
+        loadAndSpeak();
+    }
 }
 </script>
 
